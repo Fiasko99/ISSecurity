@@ -50,9 +50,13 @@ class ISMainWindow(QtWidgets.QMainWindow, IS.Ui_IS_main):
         login = self.login_line.text()
         password = self.password_line.text()
 
-        security = r.get('http://localhost:3000/security').json()
-        workers = security
         success = False
+        security = []
+        try:
+            security = r.get('http://localhost:3000/security').json()
+        except Exception as e:
+            QtWidgets.QMessageBox.information(self, 'Error', '504 Server Error')
+        workers = security
         for worker in security:
             if login == worker['username'] and password == worker['password']:
                 success = True
